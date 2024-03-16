@@ -1,0 +1,50 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="30">
+            <item index="0" class="java.lang.String" itemvalue="mysqlclient" />
+            <item index="1" class="java.lang.String" itemvalue="django-environ" />
+            <item index="2" class="java.lang.String" itemvalue="django-recaptcha" />
+            <item index="3" class="java.lang.String" itemvalue="sorl-thumbnail" />
+            <item index="4" class="java.lang.String" itemvalue="python-slugify" />
+            <item index="5" class="java.lang.String" itemvalue="django-elasticsearch-dsl-drf" />
+            <item index="6" class="java.lang.String" itemvalue="redis" />
+            <item index="7" class="java.lang.String" itemvalue="celery" />
+            <item index="8" class="java.lang.String" itemvalue="django-etc" />
+            <item index="9" class="java.lang.String" itemvalue="django-model-utils" />
+            <item index="10" class="java.lang.String" itemvalue="uvicorn" />
+            <item index="11" class="java.lang.String" itemvalue="daphne" />
+            <item index="12" class="java.lang.String" itemvalue="Markdown" />
+            <item index="13" class="java.lang.String" itemvalue="django-test-plus" />
+            <item index="14" class="java.lang.String" itemvalue="rcssmin" />
+            <item index="15" class="java.lang.String" itemvalue="django-celery-beat" />
+            <item index="16" class="java.lang.String" itemvalue="django-celery-email" />
+            <item index="17" class="java.lang.String" itemvalue="django-crispy-forms" />
+            <item index="18" class="java.lang.String" itemvalue="uWSGI" />
+            <item index="19" class="java.lang.String" itemvalue="django-compressor" />
+            <item index="20" class="java.lang.String" itemvalue="hiredis" />
+            <item index="21" class="java.lang.String" itemvalue="channels-redis" />
+            <item index="22" class="java.lang.String" itemvalue="django-mptt" />
+            <item index="23" class="java.lang.String" itemvalue="django" />
+            <item index="24" class="java.lang.String" itemvalue="django-redis" />
+            <item index="25" class="java.lang.String" itemvalue="django-timezone-field" />
+            <item index="26" class="java.lang.String" itemvalue="argon2-cffi" />
+            <item index="27" class="java.lang.String" itemvalue="django-allauth" />
+            <item index="28" class="java.lang.String" itemvalue="pytz" />
+            <item index="29" class="java.lang.String" itemvalue="Pillow" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="PyQt6.QtWidgets.clicked.connect" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
