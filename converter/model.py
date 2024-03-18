@@ -11,7 +11,7 @@ import converter.methods as pm
 
 import thermopy as tp
 from thermopy.database import DbStoichio
-from thermopy.utilities.functions import get_charge_number, calculate_ionic_strength
+from thermopy.utilities import get_charge_number, calculate_ionic_strength
 
 
 class PressureConverter:
