@@ -4,7 +4,7 @@ import iapws
 # test
 
 import thermopy as tp
-from thermopy.database.solid_stoichio import solids
+from thermopy.database import DbStoichio
 from thermopy.utilities.functions import find_pair, get_charge_number, cache_array, cache_dict, cache_dict_array
 
 from PitzerBase.functions import compute_j_jp

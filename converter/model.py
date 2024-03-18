@@ -10,7 +10,7 @@ sys.path.append(os.path.dirname(SCRIPT_DIR))
 import converter.methods as pm
 
 import thermopy as tp
-from thermopy.database import Db
+from thermopy.database import DbStoichio
 from thermopy.utilities.functions import get_charge_number, calculate_ionic_strength
 
 
@@ -31,16 +31,7 @@ class PressureConverter:
         self.p2_data = p2_data
         self.salt = salt
 
-    def ion_and_charge(self):
-        solid_data = solids[self.salt]
-        groups = {}
-        for key, value in solid_data.items():
-            if value['type'] == 'cation':
-                groups['cation'] = (key, value['value'])
-            elif value['type'] == 'anion':
-                groups['anion'] = (key, value['value'])
 
-        return groups
 
     def get_molalities(self, m):
         ic = self.ion_and_charge()
