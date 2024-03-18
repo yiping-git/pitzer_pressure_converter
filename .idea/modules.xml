@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/PyPitzerPressure.iml" filepath="$PROJECT_DIR$/.idea/PyPitzerPressure.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/pitzer_pressure_converter.iml" filepath="$PROJECT_DIR$/.idea/pitzer_pressure_converter.iml" />
     </modules>
   </component>
 </project>

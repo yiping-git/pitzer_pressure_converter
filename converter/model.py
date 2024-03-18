@@ -11,11 +11,10 @@ import converter.methods as pm
 
 import thermopy as tp
 from thermopy.database.solid_stoichio import solids
-from thermopy.utilities.functions import get_charge_number
+from thermopy.utilities.functions import get_charge_number, calculate_ionic_strength
 
 
-
-class PitzerPressure:
+class PressureConverter:
     def __init__(self, t_data, p1_data, p2_data, m_data, salt):
         """
 
@@ -57,7 +56,7 @@ class PitzerPressure:
         :param m: moalilty of the electrolyte.
         :return: ionic strength.
         """
-        i = pm.calculate_ionic_strength(self.get_molalities(m))
+        i = calculate_ionic_strength(self.get_molalities(m))
         return i
 
     @staticmethod
@@ -106,4 +105,5 @@ class PitzerPressure:
         )
         i = self.get_ionic_strength(m=m)
 
-        return nu * abs(z_c * z_a) * (a_h_p1 - a_h_p2) * self.h(i=i) - 2 * nu_c * nu_a * tp.R * t ** 2 * (m * int_p_bv_t)
+        return nu * abs(z_c * z_a) * (a_h_p1 - a_h_p2) * self.h(i=i) - 2 * nu_c * nu_a * tp.R * t ** 2 * (
+                    m * int_p_bv_t)
