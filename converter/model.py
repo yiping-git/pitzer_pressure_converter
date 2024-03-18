@@ -9,11 +9,10 @@ sys.path.append(os.path.dirname(SCRIPT_DIR))
 
 import converter.methods as pm
 
-from database.solid_data import solids
-from public.low_level import get_charge_number
+import thermopy as tp
+from thermopy.database.solid_stoichio import solids
+from thermopy.utilities.functions import get_charge_number
 
-R = 8.314  # gas constant, in J/mol·K
-M_w = 18.015257
 
 
 class PitzerPressure:
@@ -107,4 +106,4 @@ class PitzerPressure:
         )
         i = self.get_ionic_strength(m=m)
 
-        return nu * abs(z_c * z_a) * (a_h_p1 - a_h_p2) * self.h(i=i) - 2 * nu_c * nu_a * R * t ** 2 * (m * int_p_bv_t)
+        return nu * abs(z_c * z_a) * (a_h_p1 - a_h_p2) * self.h(i=i) - 2 * nu_c * nu_a * tp.R * t ** 2 * (m * int_p_bv_t)
