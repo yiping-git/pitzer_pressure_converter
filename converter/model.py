@@ -10,7 +10,7 @@ sys.path.append(os.path.dirname(SCRIPT_DIR))
 import converter.methods as pm
 
 import thermopy as tp
-from thermopy.database.solid_stoichio import solids
+from thermopy.database import Db
 from thermopy.utilities.functions import get_charge_number, calculate_ionic_strength
 
 
