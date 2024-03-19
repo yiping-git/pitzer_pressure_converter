@@ -39,7 +39,7 @@ class PressureConverter:
         :param int_pcvt   : # ∫{[∂Cv/∂T]P}dp, P1 -> P2
         :param int_pbvt2  : # ∫{[∂²Bv/∂T²]P}dp, P1 -> P2
         :param int_pcvt2  : # ∫{[∂²Bv/∂T²]P}dp, P1 -> P2
-        :param int_pv0t2  : # ∫{[∂²V0(2)/∂T²]P}dp, P1 -> P2, apparent molar volume of the solute.
+        :param int_pv0t2  : # ∫{[∂²V0(2)/∂T²]P}dp, P1 -> P2, apparent molar volume of the aqueous solute.
         """
         self.T = T
         self.m = m
