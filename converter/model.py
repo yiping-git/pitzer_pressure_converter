@@ -17,8 +17,8 @@ from thermopy.water import dielectric, a_phi, a_h, a_j, a_v
 
 class PressureConverter:
     def __init__(self, T, P1, P2, m, salt,
-                 int_pbetap0=None,
-                 int_pbetap1=None,
+                 int_pbeta0p=None,
+                 int_pbeta1p=None,
                  int_pcphip=None,
                  int_pbvt=None,
                  int_pcvt=None,
@@ -40,8 +40,6 @@ class PressureConverter:
         :param int_pbvt2  : # ∫{[∂²Bv/∂T²]P}dp, P1 -> P2
         :param int_pcvt2  : # ∫{[∂²Bv/∂T²]P}dp, P1 -> P2
         :param int_pv0t2  : # ∫{[∂²V0(2)/∂T²]P}dp, P1 -> P2, apparent molar volume of the solute.
-        :param
-        :param
         """
         self.T = T
         self.m = m
@@ -49,14 +47,15 @@ class PressureConverter:
         self.P2 = P2
         self.salt = salt
         self.salt_data = self.get_salt_data()
-        self.int_pbetap0 = int_pbetap0
-        self.int_pbetap1 = int_pbetap1
+        self.int_pbeta0p = int_pbeta0p
+        self.int_pbeta1p = int_pbeta1p
         self.int_pcphip = int_pcphip
         self.int_pbvt = int_pbvt
         self.int_pcvt = int_pcvt
         self.int_pbvt2 = int_pcvt2
         self.int_pcvt2 = int_pcvt2
         self.int_pv0t2 = int_pv0t2
+        self.alpha = 1
 
     def get_salt_data(self):
         data = DbStoichio(compound=self.salt)
@@ -101,6 +100,57 @@ class PressureConverter:
         b = 1.2
         return np.log(1 + b * np.sqrt(i)) / (2 * b)
 
+    def osmotic_coefficient_difference(self):
+        """
+        Returns:the difference between φ(P2) and φ(P1), that is, φ(P2) - φ(P1).
+        """
+        alpha = self.alpha
+        cation = self.salt_data.cations[0]
+        anion = self.salt_data.cations[0]
+        z_c = get_charge_number(cation)
+        z_a = get_charge_number(anion)
+
+        nu_c = self.salt_data.coefficients[cation]
+        nu_a = self.salt_data.coefficients[anion]
+
+        nu = nu_c + nu_a
+        i = self.get_ionic_strength(self.m)
+
+        a_phi_p1 = self.get_a_phi(self.T, self.P1)
+        a_phi_p2 = self.get_a_phi(self.T, self.P2)
+        return - abs(z_c * z_a) * (a_phi_p2 - a_phi_p1) * np.sqrt(i) / (1 + 1.2 * np.sqrt(i)) + 2 * nu_c * nu_a / nu * (
+                self.m * self.int_pbeta0p + self.m * self.int_pbeta1p * np.exp(-alpha * np.sqrt(i)) + self.m ** 2 * (
+                nu_c * nu_a) ** (
+                        1 / 2) * self.int_pcphip
+        )
+
+    def activity_coefficient_difference(self):
+        """
+        Returns:the difference between γ±(P2) and γ±(P1), that is, γ±(P2) - γ±(P1).
+        """
+        alpha = self.alpha
+        cation = self.salt_data.cations[0]
+        anion = self.salt_data.cations[0]
+        z_c = get_charge_number(cation)
+        z_a = get_charge_number(anion)
+
+        nu_c = self.salt_data.coefficients[cation]
+        nu_a = self.salt_data.coefficients[anion]
+
+        nu = nu_c + nu_a
+        i = self.get_ionic_strength(self.m)
+        a_phi_p1 = self.get_a_phi(self.T, self.P1)
+        a_phi_p2 = self.get_a_phi(self.T, self.P2)
+
+        return - abs(z_c * z_a) * (a_phi_p2 - a_phi_p1) * (
+                np.sqrt(i) / (1 + np.sqrt(i)) + 2 / 1.2 * np.log(1 + 1.2 * np.sqrt(i))) \
+               + 2 * nu_c * nu_a / nu * (
+                       2 * self.m * self.int_pbeta0p + 2 * self.m / (alpha ** 2 * i) * self.int_pbeta1p * (
+                       1 - (1 + alpha * np.sqrt(i) - alpha ** 2 * i / 2) * np.exp(-alpha * np.sqrt(i))
+               )
+                       + 3 / 2 * self.m ** 2 * (nu_c * nu_a) ** (1 / 2) * self.int_pcphip
+               )
+
     def apparent_molar_enthalpy_difference(self):
         """
         Returns: the difference between ϕL(P2) and ϕL(P1), that is, ϕL(P2) - ϕL(P1), J·mol⁻¹.
@@ -131,3 +181,26 @@ class PressureConverter:
         return nu * abs(z_c * z_a) * (a_h_p2 - a_h_p1) * self.h(i=i) - 2 * nu_c * nu_a * tp.R * T ** 2 * (
                 m * self.int_pbvt + m ** 2 * (nu_c * z_c) * self.int_pcvt
         )
+
+    def apparent_molar_heat_capacity_difference(self):
+        """
+        Returns:the difference between ϕCp(P2) and ϕCp(P1), that is, ϕCp(P2) - ϕCp(P1).
+        """
+        cation = self.salt_data.cations[0]
+        anion = self.salt_data.cations[0]
+        z_c = get_charge_number(cation)
+        z_a = get_charge_number(anion)
+
+        nu_c = self.salt_data.coefficients[cation]
+        nu_a = self.salt_data.coefficients[anion]
+
+        nu = nu_c + nu_a
+        i = self.get_ionic_strength(self.m)
+        a_j_p1 = self.get_a_j(self.T, self.P1)
+        a_j_p2 = self.get_a_j(self.T, self.P2)
+
+        return nu * abs(z_c * z_a) * (a_j_p2 - a_j_p1) * self.h(
+            i=i) + self.T * self.int_pv0t2 + 2 * nu_c * nu_a * tp.R * self.T ** 2 * (
+                       self.m * (self.int_pbvt2 + 2 / self.T * self.int_pbvt) +
+                       self.m ** 2 * nu_c * z_c * (self.int_pcvt2 + 2 / self.T * self.int_pcvt)
+               )
