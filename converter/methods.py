@@ -204,7 +204,7 @@ def bv(b, T, P):
 
 def p_bv_t(b, T, P):
     """
-
+    Partial differentiation of Bv to T [∂Bv/∂T]P.
     :param b: parameter
     :param T: temperature in K
     :param P: pressure in bar
@@ -231,14 +231,14 @@ def p_bv_t(b, T, P):
 from scipy.integrate import quad
 
 
-def int_p_bv_t(P1, P2, T):
+def int_pbvt(P1, P2, T):
     b = bv_KCl
     """
-
+    Intgration of partial differentiation of Bv to T: ∫[∂Bv/∂T]P from P1 to P2.
     :param b: parameter
     :param T: temperature in K
-    :param P1: start pressure in bar
-    :param P2: end pressure in bar
+    :param P1: start pressure in MPa
+    :param P2: end pressure in Mpa
     :return:
     """
     # return -P1 ** 3 * (
