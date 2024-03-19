@@ -215,11 +215,11 @@ class PressureConverter:
 
         i = self.get_ionic_strength(m=m)
 
-        int_pbvt = self.int_pb0pt + 2 * self.int_pbeta1pt * (
+        int_pbvt = self.int_pb0pt + 2 * self.int_pb1pt * (
                 1 - (1 + self.alpha * np.sqrt(i)) * np.exp(-self.alpha * np.sqrt(i))
         ) / (self.alpha ** 2 * i)
 
-        int_pcvt = self.pc0pt + 4 * self.int_pc1pt * (
+        int_pcvt = self.int_pc0pt + 4 * self.int_pc1pt * (
                 6 - (
                 6 + self.alpha2 * np.sqrt(i) + 3 * self.alpha2 ** 2 * i + self.alpha2 ** 3 * i ** (3 / 2)
         ) * np.exp(-self.alpha2 * np.sqrt(i))
@@ -249,20 +249,20 @@ class PressureConverter:
         a_j_p1 = self.get_a_j(self.T, self.P1)
         a_j_p2 = self.get_a_j(self.T, self.P2)
 
-        int_pbvt2 = self.int_pbeta0ptt + 2 * self.int_pbeta1ptt * (
+        int_pbvt2 = self.int_pb0ptt + 2 * self.int_pb1ptt * (
                 1 - (1 + self.alpha * np.sqrt(i)) * np.exp(-self.alpha * np.sqrt(i))
         ) / (self.alpha ** 2 * i)
-        int_pbvt = self.int_pb0pt + 2 * self.int_pbeta1pt * (
+        int_pbvt = self.int_pb0pt + 2 * self.int_pb1pt * (
                 1 - (1 + self.alpha * np.sqrt(i)) * np.exp(-self.alpha * np.sqrt(i))
         ) / (self.alpha ** 2 * i)
 
-        int_pcvt2 = self.pc0ptt + 4 * self.int_pc1ptt * (
+        int_pcvt2 = self.int_pc0ptt + 4 * self.int_pc1ptt * (
                 6 - (
                 6 + self.alpha2 * np.sqrt(i) + 3 * self.alpha2 ** 2 * i + self.alpha2 ** 3 * i ** (3 / 2)
         ) * np.exp(-self.alpha2 * np.sqrt(i))
         ) / (self.alpha2 ** 4 * i ** 2)
 
-        int_pcvt = self.pc0pt + 4 * self.int_pc1pt * (
+        int_pcvt = self.int_pc0pt + 4 * self.int_pc1pt * (
                 6 - (
                 6 + self.alpha2 * np.sqrt(i) + 3 * self.alpha2 ** 2 * i + self.alpha2 ** 3 * i ** (3 / 2)
         ) * np.exp(-self.alpha2 * np.sqrt(i))
