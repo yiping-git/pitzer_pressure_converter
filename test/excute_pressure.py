@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from converter.model import PitzerPressure
+from converter.model_general import PitzerPressure
 input_file_path = r"E:\work\data\fit\KCl-H2O-complete-v2-enthalpy.csv"
 output_file_path = r"E:\work\data\fit\KCl-H2O-complete-v2-enthalpy.csv"
 
