@@ -74,11 +74,9 @@ class PressureConverter:
         self.alpha = 2
         self.alpha2 = 2.5
 
-
     def get_salt_data(self):
         data = DbStoichio(compound=self.salt)
         return data
-
 
     def get_molalities(self, m):
         cations = self.salt_data.cations
@@ -94,7 +92,6 @@ class PressureConverter:
 
         return molalities
 
-
     def get_ionic_strength(self, m):
         """
         Calculating ionic strength, can be molality based or mole fraction based.
@@ -104,32 +101,27 @@ class PressureConverter:
         i = calculate_ionic_strength(self.get_molalities(m))
         return i
 
-
     @staticmethod
     def get_a_phi(T, P):
         return a_phi(T=T, P=P, method="Fernandez")
-
 
     @staticmethod
     def get_a_l(T, P):
         return a_h(T=T, P=P, method="Fernandez")
 
-
     @staticmethod
     def get_a_j(T, P):
         return a_j(T=T, P=P, method="Fernandez")
-
 
     def h(self, i):
         b = 1.2
         return np.log(1 + b * np.sqrt(i)) / (2 * b)
 
-
     def osmotic_coefficient_difference(self):
         """
         Returns:the difference between φ(P2) and φ(P1), that is, φ(P2) - φ(P1).
         """
-        alpha = self.alpha
+
         cation = self.salt_data.cations[0]
         anion = self.salt_data.cations[0]
         z_c = get_charge_number(cation)
@@ -143,15 +135,15 @@ class PressureConverter:
 
         a_phi_p1 = self.get_a_phi(self.T, self.P1)
         a_phi_p2 = self.get_a_phi(self.T, self.P2)
+
         return - abs(z_c * z_a) * (a_phi_p2 - a_phi_p1) * np.sqrt(i) / (
                 1 + 1.2 * np.sqrt(i)) \
                + self.m * 2 * nu_c * nu_a / nu * (
-                       self.int_pbeta0p + self.int_pbeta1p * np.exp(-alpha * np.sqrt(i))
+                       self.int_pbeta0p + self.int_pbeta1p * np.exp(-self.alpha * np.sqrt(i))
                ) \
-               + self.m ** 2 * 4 * nu_c ** 2 * nu_a / nu * (
+               + self.m ** 2 * 4 * nu_c ** 2 * nu_a * z_c / nu * (
                        self.int_pc0p + self.int_pc1p * np.exp(-self.alpha2 * np.sqrt(i))
                )
-
 
     def activity_coefficient_difference(self):
         """
@@ -187,7 +179,6 @@ class PressureConverter:
                        )
                )
 
-
     def apparent_molar_enthalpy_difference(self):
         """
         Returns: the difference between ϕL(P2) and ϕL(P1), that is, ϕL(P2) - ϕL(P1), J·mol⁻¹.
@@ -221,7 +212,7 @@ class PressureConverter:
 
         int_pcvt = self.int_pc0pt + 4 * self.int_pc1pt * (
                 6 - (
-                6 + self.alpha2 * np.sqrt(i) + 3 * self.alpha2 ** 2 * i + self.alpha2 ** 3 * i ** (3 / 2)
+                6 + 6 * self.alpha2 * np.sqrt(i) + 3 * self.alpha2 ** 2 * i + self.alpha2 ** 3 * i ** (3 / 2)
         ) * np.exp(-self.alpha2 * np.sqrt(i))
         ) / (self.alpha2 ** 4 * i ** 2)
 
@@ -230,7 +221,6 @@ class PressureConverter:
                        m * int_pbvt
                        + m ** 2 * (nu_c * z_c) * int_pcvt
                )
-
 
     def apparent_molar_heat_capacity_difference(self):
         """
@@ -249,22 +239,23 @@ class PressureConverter:
         a_j_p1 = self.get_a_j(self.T, self.P1)
         a_j_p2 = self.get_a_j(self.T, self.P2)
 
-        int_pbvt2 = self.int_pb0ptt + 2 * self.int_pb1ptt * (
-                1 - (1 + self.alpha * np.sqrt(i)) * np.exp(-self.alpha * np.sqrt(i))
-        ) / (self.alpha ** 2 * i)
         int_pbvt = self.int_pb0pt + 2 * self.int_pb1pt * (
                 1 - (1 + self.alpha * np.sqrt(i)) * np.exp(-self.alpha * np.sqrt(i))
         ) / (self.alpha ** 2 * i)
 
-        int_pcvt2 = self.int_pc0ptt + 4 * self.int_pc1ptt * (
-                6 - (
-                6 + self.alpha2 * np.sqrt(i) + 3 * self.alpha2 ** 2 * i + self.alpha2 ** 3 * i ** (3 / 2)
-        ) * np.exp(-self.alpha2 * np.sqrt(i))
-        ) / (self.alpha2 ** 4 * i ** 2)
+        int_pbvt2 = self.int_pb0ptt + 2 * self.int_pb1ptt * (
+                1 - (1 + self.alpha * np.sqrt(i)) * np.exp(-self.alpha * np.sqrt(i))
+        ) / (self.alpha ** 2 * i)
 
         int_pcvt = self.int_pc0pt + 4 * self.int_pc1pt * (
                 6 - (
-                6 + self.alpha2 * np.sqrt(i) + 3 * self.alpha2 ** 2 * i + self.alpha2 ** 3 * i ** (3 / 2)
+                6 + 6 * self.alpha2 * np.sqrt(i) + 3 * self.alpha2 ** 2 * i + self.alpha2 ** 3 * i ** (3 / 2)
+        ) * np.exp(-self.alpha2 * np.sqrt(i))
+        ) / (self.alpha2 ** 4 * i ** 2)
+
+        int_pcvt2 = self.int_pc0ptt + 4 * self.int_pc1ptt * (
+                6 - (
+                6 + 6 * self.alpha2 * np.sqrt(i) + 3 * self.alpha2 ** 2 * i + self.alpha2 ** 3 * i ** (3 / 2)
         ) * np.exp(-self.alpha2 * np.sqrt(i))
         ) / (self.alpha2 ** 4 * i ** 2)
 
