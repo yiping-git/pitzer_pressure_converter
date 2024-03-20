@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from converter.model_general import PitzerPressure
+from converter.model_archer import PressureConverter
 input_file_path = r"E:\work\data\fit\KCl-H2O-complete-v2-enthalpy.csv"
 output_file_path = r"E:\work\data\fit\KCl-H2O-complete-v2-enthalpy.csv"
 
@@ -14,7 +14,7 @@ def apparent_molar_enthalpy_difference(row):
     m_data = row['mf']
     salt =    row['salt']
 
-    solution_i = PitzerPressure(
+    solution_i = PressureConverter(
         t_data=t_data,
         p1_data=p1_data,
         p2_data=p2_data,

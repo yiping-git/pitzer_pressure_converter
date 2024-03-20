@@ -31,7 +31,9 @@ class PressureConverter:
                  int_pv0t2=None,
                  ):
         """
-        :param T: temperature, k.
+        Convert thermodynamic properties ϕ, γ±, ϕCp, Δdil H from one pressure (P1) to another pressure (P2) at constant
+        temperature (T) and concentration (m) of a binary X-H2O (X being a salt) solution.
+        :param T: temperature, K.
         :param P1: start pressure MPa.
         :param P2: end pressure MPa.
         :param m: concentration, molality.
@@ -49,7 +51,6 @@ class PressureConverter:
         :param int_pb1ptt   : # ∫{[∂³β(1)/∂P∂T²]}dp, P1 -> P2
         :param int_pc0ptt   : # ∫{[∂³c0/∂P∂T²]}dp, P1 -> P2
         :param int_pc1ptt   : # ∫{[∂³c1/∂P∂T²]}dp, P1 -> P2
-
         :param int_pv0t2  : # ∫{[∂²V0(2)/∂T²]P}dp, P1 -> P2, apparent molar volume of the aqueous solute.
         """
         self.T = T
