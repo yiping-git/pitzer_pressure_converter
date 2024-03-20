@@ -41,14 +41,14 @@ class PressureConverter:
         :param int_pbp1: # ∫{[∂β(1)/∂P]T}dp, P1 -> P2
         :param int_pc0p : # ∫{[∂c0/∂P]T}dp, P1 -> P2
         :param int_pc1p : # ∫{[∂c1/∂P]T}dp, P1 -> P2
-        :param int_pb0pt   : # ∫{[∂β(0)/∂P/∂T]}dp, P1 -> P2
-        :param int_pb1pt   : # ∫{[∂β(1)/∂P/∂T]}dp, P1 -> P2
-        :param int_pc0pt   : # ∫{[∂c0/∂P/∂T]}dp, P1 -> P2
-        :param int_pc1pt   : # ∫{[∂c1/∂P/∂T]}dp, P1 -> P2
-        :param int_pb0ptt   : # ∫{[∂β(0)/∂P/∂T²]}dp, P1 -> P2
-        :param int_pb1ptt   : # ∫{[∂β(1)/∂P/∂T²]}dp, P1 -> P2
-        :param int_pc0ptt   : # ∫{[∂c0/∂P/∂T²]}dp, P1 -> P2
-        :param int_pc1ptt   : # ∫{[∂c1/∂P/∂T²]}dp, P1 -> P2
+        :param int_pb0pt   : # ∫{[∂²β(0)/∂P∂T]}dp, P1 -> P2
+        :param int_pb1pt   : # ∫{[∂²β(1)/∂P∂T]}dp, P1 -> P2
+        :param int_pc0pt   : # ∫{[∂²c0/∂P∂T]}dp, P1 -> P2
+        :param int_pc1pt   : # ∫{[∂²c1/∂P∂T]}dp, P1 -> P2
+        :param int_pb0ptt   : # ∫{[∂³β(0)/∂P∂T²]}dp, P1 -> P2
+        :param int_pb1ptt   : # ∫{[∂³β(1)/∂P∂T²]}dp, P1 -> P2
+        :param int_pc0ptt   : # ∫{[∂³c0/∂P∂T²]}dp, P1 -> P2
+        :param int_pc1ptt   : # ∫{[∂³c1/∂P∂T²]}dp, P1 -> P2
 
         :param int_pv0t2  : # ∫{[∂²V0(2)/∂T²]P}dp, P1 -> P2, apparent molar volume of the aqueous solute.
         """
@@ -207,13 +207,13 @@ class PressureConverter:
 
         # check input
         if not self.int_pb0pt:
-            print("Needs input of 'int_pb0pt' (= ∫{[∂β(0)/∂P/∂T]T}dp, P1 -> P2)")
+            print("Needs input of 'int_pb0pt' (= ∫{[∂β²(0)/∂P∂T]}dp, P1 -> P2)")
         if not self.int_pb1pt:
-            print("Needs input of 'int_pb1pt' (= ∫{[∂β(1)/∂P/∂T]T}dp, P1 -> P2)")
+            print("Needs input of 'int_pb1pt' (= ∫{[∂²β(1)/∂P∂T]}dp, P1 -> P2)")
         if not self.int_pc0pt:
-            print("Needs input of 'int_pc0pt' (= ∫{[∂c(0)/∂P/∂T]T}dp, P1 -> P2)")
+            print("Needs input of 'int_pc0pt' (= ∫{[∂²c(0)/∂P∂T]}dp, P1 -> P2)")
         if not self.int_pc1pt:
-            print("Needs input of 'int_pc1pt' (= ∫{[∂c(1)/∂P/∂T]T}dp, P1 -> P2)")
+            print("Needs input of 'int_pc1pt' (= ∫{[∂²c(1)/∂P∂T]}dp, P1 -> P2)")
 
 
         cation = self.salt_data.cations[0]
@@ -261,21 +261,21 @@ class PressureConverter:
         """
         # check input
         if not self.int_pb0pt:
-            print("Needs input of 'int_pb0pt' (= ∫{[∂β(0)/∂P/∂T]T}dp, P1 -> P2)")
+            print("Needs input of 'int_pb0pt' (= ∫{[∂²β(0)/∂P∂T]}dp, P1 -> P2)")
         if not self.int_pb1pt:
-            print("Needs input of 'int_pb1pt' (= ∫{[∂β(1)/∂P/∂T]T}dp, P1 -> P2)")
+            print("Needs input of 'int_pb1pt' (= ∫{[∂²β(1)/∂P∂T]}dp, P1 -> P2)")
         if not self.int_pc0pt:
-            print("Needs input of 'int_pc0pt' (= ∫{[∂c(0)/∂P/∂T]T}dp, P1 -> P2)")
+            print("Needs input of 'int_pc0pt' (= ∫{[∂²c(0)/∂P∂T]}dp, P1 -> P2)")
         if not self.int_pc1pt:
-            print("Needs input of 'int_pc1pt' (= ∫{[∂c(1)/∂P/∂T]T}dp, P1 -> P2)")
+            print("Needs input of 'int_pc1pt' (= ∫{[∂²c(1)/∂P∂T]}dp, P1 -> P2)")
         if not self.int_pb0ptt:
-            print("Needs input of 'int_pb0ptt' (= ∫{[∂β(0)/∂P/∂T²]}dp, P1 -> P2")
+            print("Needs input of 'int_pb0ptt' (= ∫{[∂³β(0)/∂P∂T²]}dp, P1 -> P2")
         if not self.int_pb1ptt:
-            print("Needs input of 'int_pb1ptt' (= ∫{[∂β(1)/∂P/∂T²]}dp, P1 -> P2")
+            print("Needs input of 'int_pb1ptt' (= ∫{[∂³β(1)/∂P∂T²]}dp, P1 -> P2")
         if not self.int_pc0ptt:
-            print("Needs input of 'int_pb1ptt' (= ∫{[∂c(0)/∂P/∂T²]}dp, P1 -> P2")
+            print("Needs input of 'int_pb1ptt' (= ∫{[∂³c(0)/∂P∂T²]}dp, P1 -> P2")
         if not self.int_pc1ptt:
-            print("Needs input of 'int_pb1ptt' (= ∫{[∂c(1)/∂P/∂T²]}dp, P1 -> P2")
+            print("Needs input of 'int_pb1ptt' (= ∫{[∂³c(1)/∂P∂T²]}dp, P1 -> P2")
 
 
         cation = self.salt_data.cations[0]
