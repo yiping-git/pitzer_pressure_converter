@@ -16,8 +16,8 @@ from thermopy.water import dielectric, a_phi, a_h, a_j, a_v
 
 class PressureConverter:
     def __init__(self, T, P1, P2, m, salt,
-                 int_pbeta0p=None,
-                 int_pbeta1p=None,
+                 int_pb0p=None,
+                 int_pb1p=None,
                  int_pc0p=None,
                  int_pc1p=None,
                  int_pb0pt=None,
@@ -37,14 +37,14 @@ class PressureConverter:
         :param m: concentration, molality.
         :param m1: start concentration.
         :param m2: end concentration.
-        :param int_pbetap0: # ∫{[∂β(0)/∂P]T}dp, P1 -> P2
-        :param int_pbetap1: # ∫{[∂β(1)/∂P]T}dp, P1 -> P2
-        :param int_pc0p : # ∫{[∂C0/∂P]T}dp, P1 -> P2
-        :param int_pc1p : # ∫{[∂C1/∂P]T}dp, P1 -> P2
-        :param int_pb0pt   : # ∫{[∂β(0)/∂P∂T]}dp, P1 -> P2
-        :param int_pb1pt   : # ∫{[∂β(1)/∂P∂T]}dp, P1 -> P2
-        :param int_pc0pt   : # ∫{[∂c0/∂P∂T]}dp, P1 -> P2
-        :param int_pc1pt   : # ∫{[∂c1/∂P∂T]}dp, P1 -> P2
+        :param int_pbp0: # ∫{[∂β(0)/∂P]T}dp, P1 -> P2
+        :param int_pbp1: # ∫{[∂β(1)/∂P]T}dp, P1 -> P2
+        :param int_pc0p : # ∫{[∂c0/∂P]T}dp, P1 -> P2
+        :param int_pc1p : # ∫{[∂c1/∂P]T}dp, P1 -> P2
+        :param int_pb0pt   : # ∫{[∂β(0)/∂P/∂T]}dp, P1 -> P2
+        :param int_pb1pt   : # ∫{[∂β(1)/∂P/∂T]}dp, P1 -> P2
+        :param int_pc0pt   : # ∫{[∂c0/∂P/∂T]}dp, P1 -> P2
+        :param int_pc1pt   : # ∫{[∂c1/∂P/∂T]}dp, P1 -> P2
         :param int_pb0ptt   : # ∫{[∂β(0)/∂P/∂T²]}dp, P1 -> P2
         :param int_pb1ptt   : # ∫{[∂β(1)/∂P/∂T²]}dp, P1 -> P2
         :param int_pc0ptt   : # ∫{[∂c0/∂P/∂T²]}dp, P1 -> P2
@@ -58,8 +58,8 @@ class PressureConverter:
         self.P2 = P2
         self.salt = salt
         self.salt_data = self.get_salt_data()
-        self.int_pbeta0p = int_pbeta0p
-        self.int_pbeta1p = int_pbeta1p
+        self.int_pb0p = int_pb0p
+        self.int_pb1p = int_pb1p
         self.int_pc0p = int_pc0p
         self.int_pc1p = int_pc1p
         self.int_pb0pt = int_pb0pt
@@ -122,6 +122,16 @@ class PressureConverter:
         Returns:the difference between φ(P2) and φ(P1), that is, φ(P2) - φ(P1).
         """
 
+        # check input
+        if not self.int_pb0p:
+            print("Needs input of 'int_pb0p' (= ∫{[∂β(0)/∂P]T}dp, P1 -> P2)")
+        if not self.int_pb1p:
+            print("Needs input of 'int_pb1p' (= ∫{[∂β(1)/∂P]T}dp, P1 -> P2)")
+        if not self.int_pc0p:
+            print("Needs input of 'int_pc01p' (= ∫{[∂c(0)/∂P]T}dp, P1 -> P2)")
+        if not self.int_pc1p:
+            print("Needs input of 'int_pc01p' (= ∫{[∂c(1)/∂P]T}dp, P1 -> P2)")
+
         cation = self.salt_data.cations[0]
         anion = self.salt_data.cations[0]
         z_c = get_charge_number(cation)
@@ -139,7 +149,7 @@ class PressureConverter:
         return - abs(z_c * z_a) * (a_phi_p2 - a_phi_p1) * np.sqrt(i) / (
                 1 + 1.2 * np.sqrt(i)) \
                + self.m * 2 * nu_c * nu_a / nu * (
-                       self.int_pbeta0p + self.int_pbeta1p * np.exp(-self.alpha * np.sqrt(i))
+                       self.int_pb0p + self.int_pb1p * np.exp(-self.alpha * np.sqrt(i))
                ) \
                + self.m ** 2 * 4 * nu_c ** 2 * nu_a * z_c / nu * (
                        self.int_pc0p + self.int_pc1p * np.exp(-self.alpha2 * np.sqrt(i))
@@ -149,6 +159,17 @@ class PressureConverter:
         """
         Returns:the difference between γ±(P2) and γ±(P1), that is, γ±(P2) - γ±(P1).
         """
+
+        # check input
+        if not self.int_pb0p:
+            print("Needs input of 'int_pb0p' (= ∫{[∂β(0)/∂P]T}dp, P1 -> P2)")
+        if not self.int_pb1p:
+            print("Needs input of 'int_pb1p' (= ∫{[∂β(1)/∂P]T}dp, P1 -> P2)")
+        if not self.int_pc0p:
+            print("Needs input of 'int_pc01p' (= ∫{[∂c(0)/∂P]T}dp, P1 -> P2)")
+        if not self.int_pc1p:
+            print("Needs input of 'int_pc01p' (= ∫{[∂c(1)/∂P]T}dp, P1 -> P2)")
+
         alpha = self.alpha
         cation = self.salt_data.cations[0]
         anion = self.salt_data.cations[0]
@@ -167,7 +188,7 @@ class PressureConverter:
                 np.sqrt(i) / (1 + np.sqrt(i)) + 2 / 1.2 * np.log(1 + 1.2 * np.sqrt(i))
         ) \
                + self.m * 2 * nu_c * nu_a / nu * (
-                       2 * self.int_pbeta0p + 2 / (alpha ** 2 * i) * self.int_pbeta1p * (
+                       2 * self.int_pb0p + 2 / (alpha ** 2 * i) * self.int_pb1p * (
                        1 - (1 + alpha * np.sqrt(i) - alpha ** 2 * i / 2) * np.exp(-alpha * np.sqrt(i)))
                ) \
                + self.m ** 2 * (2 * nu_c ** 2 * nu_a * z_c) / nu * (
@@ -183,6 +204,18 @@ class PressureConverter:
         """
         Returns: the difference between ϕL(P2) and ϕL(P1), that is, ϕL(P2) - ϕL(P1), J·mol⁻¹.
         """
+
+        # check input
+        if not self.int_pb0pt:
+            print("Needs input of 'int_pb0pt' (= ∫{[∂β(0)/∂P/∂T]T}dp, P1 -> P2)")
+        if not self.int_pb1pt:
+            print("Needs input of 'int_pb1pt' (= ∫{[∂β(1)/∂P/∂T]T}dp, P1 -> P2)")
+        if not self.int_pc0pt:
+            print("Needs input of 'int_pc0pt' (= ∫{[∂c(0)/∂P/∂T]T}dp, P1 -> P2)")
+        if not self.int_pc1pt:
+            print("Needs input of 'int_pc1pt' (= ∫{[∂c(1)/∂P/∂T]T}dp, P1 -> P2)")
+
+
         cation = self.salt_data.cations[0]
         anion = self.salt_data.cations[0]
         z_c = get_charge_number(cation)
@@ -226,6 +259,25 @@ class PressureConverter:
         """
         Returns:the difference between ϕCp(P2) and ϕCp(P1), that is, ϕCp(P2) - ϕCp(P1).
         """
+        # check input
+        if not self.int_pb0pt:
+            print("Needs input of 'int_pb0pt' (= ∫{[∂β(0)/∂P/∂T]T}dp, P1 -> P2)")
+        if not self.int_pb1pt:
+            print("Needs input of 'int_pb1pt' (= ∫{[∂β(1)/∂P/∂T]T}dp, P1 -> P2)")
+        if not self.int_pc0pt:
+            print("Needs input of 'int_pc0pt' (= ∫{[∂c(0)/∂P/∂T]T}dp, P1 -> P2)")
+        if not self.int_pc1pt:
+            print("Needs input of 'int_pc1pt' (= ∫{[∂c(1)/∂P/∂T]T}dp, P1 -> P2)")
+        if not self.int_pb0ptt:
+            print("Needs input of 'int_pb0ptt' (= ∫{[∂β(0)/∂P/∂T²]}dp, P1 -> P2")
+        if not self.int_pb1ptt:
+            print("Needs input of 'int_pb1ptt' (= ∫{[∂β(1)/∂P/∂T²]}dp, P1 -> P2")
+        if not self.int_pc0ptt:
+            print("Needs input of 'int_pb1ptt' (= ∫{[∂c(0)/∂P/∂T²]}dp, P1 -> P2")
+        if not self.int_pc1ptt:
+            print("Needs input of 'int_pb1ptt' (= ∫{[∂c(1)/∂P/∂T²]}dp, P1 -> P2")
+
+
         cation = self.salt_data.cations[0]
         anion = self.salt_data.cations[0]
         z_c = get_charge_number(cation)
